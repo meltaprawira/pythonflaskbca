@@ -3,7 +3,9 @@ from sqlalchemy import create_engine, Column, Integer, String, MetaData, Table, 
 
 DATABASE_PATH_SCHOOL = 'mysql://root:RzDCm9jr6UuT2WRRxQoD@containers-us-west-181.railway.app:6301/railway'
 
-DATABASE_URI = 'sqlite:///' + DATABASE_PATH_SCHOOL
+# DATABASE_URI = 'sqlite:///' + DATABASE_PATH_SCHOOL
+DATABASE_URI = 'mysql://root:RzDCm9jr6UuT2WRRxQoD@containers-us-west-181.railway.app:6301/railway'
+
 engine = create_engine(DATABASE_URI, echo=True)
 metadata = MetaData()
 
