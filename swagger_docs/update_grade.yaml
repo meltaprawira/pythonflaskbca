@@ -1,0 +1,42 @@
+openapi: 3.0.0 #Mendefinisikan versi OpenAPI yang digunakan, dalam hal ini adalah versi 3
+
+info: 
+  title: Update Student Grade
+  version: 1.0.0 
+
+tags: 
+  - name: Daftar API 
+
+parameters: 
+  - name: grade_id
+    in: path
+    description: Grade Id fot update
+    required: true
+    type: integer
+  - in: body
+    name: body 
+    description: Grade data for update
+    required: true
+    schema: 
+      $ref: '#/definitions/Grades' #Referensi ke definisi 'Karyawan'
+
+responses: #Daftar respon yang dapat diberikan oleh operasi API 
+  201: #kode status HTTP untuk respon sukses
+    description: Update Student Data Successfully
+    schema:
+      $ref: '#/definitions/Grades'
+
+definitions: 
+  Grades: 
+    type: object
+    properties: 
+      subject_name:
+        type: string
+      score:
+        type: float
+      date:
+        type: string
+    required:
+      - subject_name
+      - score
+      - date

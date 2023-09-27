@@ -1,0 +1,42 @@
+openapi: 3.0.0 #Mendefinisikan versi OpenAPI yang digunakan, dalam hal ini adalah versi 3
+
+info: 
+  title: Update Student Data
+  version: 1.0.0 
+
+tags: 
+  - name: Daftar API 
+
+parameters: 
+  - name: student_id
+    in: path
+    description: Student Id fot update
+    required: true
+    type: integer
+  - in: body
+    name: body 
+    description: Student data for update
+    required: true
+    schema: 
+      $ref: '#/definitions/Students'
+
+responses: #Daftar respon yang dapat diberikan oleh operasi API 
+  201: #kode status HTTP untuk respon sukses
+    description: Update Student Data Successfully
+    schema:
+      $ref: '#/definitions/Students'
+
+definitions: 
+  Students: 
+    type: object
+    properties: 
+      name:
+        type: string
+      student_class:
+        type: string
+      grade:
+        type: string
+    required:
+      - name
+      - student_class
+      - grade

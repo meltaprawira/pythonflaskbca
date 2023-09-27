@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Tampilkan Semua Data Siswa</title>
+        <link rel="stylesheet" href="{{url_for('static', filename='style.css')}}">
+    </head>
+
+    <body>
+        <a href="/" class = "home-button-display">Kembali ke Home</a>
+        <h1>Student Data</h1>
+        <br>
+        <form action="/input_student" method="post">
+            <label for="name">Nama Siswa:</label>
+            <input type="text" name="name" id="name" readonly>
+            <br>
+            <label for="student_class">Class:</label>
+            <input type="text" name="student_class" id="student_class" readonly>
+            <label for="grade">Grade:</label>
+            <input type="text" name="grade" id="grade" readonly>
+        </form>
+
+    </body>
+</html>

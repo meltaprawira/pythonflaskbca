@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Tampilkan Semua Data Siswa</title>
+        <link rel="stylesheet" href="{{url_for('static', filename='style.css')}}">
+        <!-- <style>
+            body{
+                background-color: #FDFD96;
+            }
+        </style> -->
+    </head>
+
+    <body>
+        <a href="/" class = "home-button-display">Kembali ke Home</a>
+       
+        {%if student_list %}
+        <h1>Semua Data Siswa</h1>
+        <br>
+        <table>
+            <thread>
+                <tr>
+                    <th>Id Siswa</th>
+                    <th>Nama Siswa</th>
+                    <th>Kelas</th>
+                    <th>Nilai</th>
+                    <th>Aksi</th>
+                </tr>
+            </thread>
+            <tbody>
+                {% for student in student_list %}
+                <tr>
+                    <td>{{ student.student_id}}</td>
+                    <td>{{ student.name}}</td>
+                    <td>{{ student.student_class}}</td>
+                    <td>{{ student.grade}}</td>
+                    <td>
+                        <button onclick="showUpdateForm('{{student.student_id}}', '{{student.name}}')" class="update-button">Update</button>
+                        <button onclick="confirmDelete('{{student.student_id}}', '{{student.name}}')" class="update-button">Delete</button>
+                        <a href="/display_grade/{{student.student_id}}" class = "update-button">Show Grade</a>
+
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <div id="updateForm" style="display:none;">
+            <h3>Update Data:</h3>
+            <form action="/update_student" method="post">
+                <input type="hidden" id="updateId" name="student_id">
+                <label class="field-label" for="updateNama">Nama Siswa:</label>
+                <input type="text" id="updateNama" name="name" readonly>
+                <label class="field-label" for="updateClass">Kelas:</label>
+                <input type="text" id="updateClass" name="studentClass" placeholder="New Class" required>
+                <label class="field-label" for="updateGrade">Grade:</label>
+                <input type="text" id="updateGrade" name="grade" readonly>
+                <input type="submit" value="Submit" class="update-button">
+
+            </form>
+        </div>
+        <script>
+            function showUpdateForm(id, name) {
+                document.getElementById('updateId').value = id;
+                document.getElementById('updateNama').value = name;
+                document.getElementById('updateForm').style.display = 'block';
+            }
+        </script>
+
+        {% endif %}
+
+        {%if grade_list %}
+        <a href="/display_all_student" class = "back-button-display">Kembali ke Show Data Student</a>
+
+        <table>
+            <thread>
+                <tr>
+                    <th>Name</th>
+                    <th>Subject</th>
+                    <th>Score</th>
+                    <th>Date</th>
+                    <th>Action</th>
+                </tr>
+            </thread>
+            <tbody>
+                {% for grade in grade_list %}
+                <tr>
+                    <td>{{ grade.name}}</td>
+                    <td>{{ grade.subject_name}}</td>
+                    <td>{{ grade.score}}</td>
+                    <td>{{ grade.date}}</td>
+                    <td>
+                        <button onclick="showUpdateFormGrade('{{grade.student_id}}', '{{grade.name}}', '{{grade.grade_id}}', '{{grade.subject_name}}', 
+                        '{{grade.score}}','{{grade.date}}')" class="update-button">Update</button>
+                         <button onclick="confirmDeleteGrade('{{grade.grade_id}}', '{{grade.name}}')" class="update-button">Delete</button>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <div id="updateFormGrade" style="display:none;">
+            <h3>Update Data:</h3>
+            <form action="/update_grade" method="post">
+                <input type="hidden" id="updateStudentId" name="student_id">
+                <label class="field-label" for="updateName">Nama Siswa:</label>
+                <input type="text" id="updateName" name="name" readonly>
+                <input type="hidden" id="updateGradeId" name="grade_id">
+                <label class="field-label" for="updateSubject">Subject:</label>
+                <input type="text" id="updateSubject" name="subject_name" placeholder="Update Subject" required>
+                <label class="field-label" for="updateScore">Score:</label>
+                <input type="int" id="updateScore" name="score" placeholder="Update Score" required>
+                <label class="field-label" for="updateDate">Date:</label>
+                <input type="date" id="updateDate" name="date" placeholder="Update Score" required>
+                <input type="submit" value="Submit" class="update-button">
+    
+            </form>
+        </div>
+        <script>
+            function showUpdateFormGrade(student_id, name, grade_id, subject_name, score, date) {
+                document.getElementById('updateStudentId').value = student_id;
+                document.getElementById('updateName').value = name;
+                document.getElementById('updateGradeId').value = grade_id;
+                document.getElementById('updateSubject').value = subject_name;
+                document.getElementById('updateScore').value = score;
+                document.getElementById('updateDate').value = date;
+                document.getElementById('updateFormGrade').style.display = 'block';
+            }
+        </script>
+        {% endif %}
+        
+        <script>
+            function confirmDelete(student_id, name) {
+                const isConfirmed = confirm(`Apakah Anda yakin ingin menghapus data ${name}?`)
+                if(isConfirmed){
+                    fetch(`/student/${student_id}`,{
+                        method: 'DELETE'
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if(data.message.includes("berhasil dihapus")){
+                            alert("Data berhasil dihapus!")
+                            location.reload();
+                        }else{
+                            alert("Terjadi kesalahan saat menghapus data. Silahkan coba lagi")
+                        }
+                    })
+                    .catch(error => {
+                        console.error("Error: ", error)
+                        alert("Terjadi kesalahan saat menghapus data. Silahkan coba lagi")
+                    })
+                }
+            }
+        </script>
+
+        <script>
+            function confirmDeleteGrade(grade_id, name) {
+                const isConfirmed = confirm(`Apakah Anda yakin ingin menghapus data ${name}?`)
+                if(isConfirmed){
+                    fetch(`/grade/${grade_id}`,{
+                        method: 'DELETE'
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if(data.message.includes("berhasil dihapus")){
+                            alert("Data berhasil dihapus!")
+                            location.reload();
+                        }else{
+                            alert("Terjadi kesalahan saat menghapus data. Silahkan coba lagi")
+                        }
+                    })
+                    .catch(error => {
+                        console.error("Error: ", error)
+                        alert("Terjadi kesalahan saat menghapus data. Silahkan coba lagi")
+                    })
+                }
+            }
+        </script>
+    </body>
+</html>

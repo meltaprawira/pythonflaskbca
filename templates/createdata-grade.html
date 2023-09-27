@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Input Grade</title>
+        <link rel="stylesheet" href="{{url_for('static', filename='style.css')}}">
+    </head>
+    <h1> Input Grade </h1>
+    <br>
+    
+    <body class="blue-theme">
+        <a href="/" class = "home-button-display">Kembali ke Home</a>
+        {%if student_list %}
+        <table>
+            <thread>
+                <tr>
+                    <th>Id Siswa</th>
+                    <th>Nama Siswa</th>
+                    <th>Kelas</th>
+                    <th>Nilai</th>
+                    <th>Aksi</th>
+                </tr>
+            </thread>
+            <tbody>
+                {% for student in student_list %}
+                <tr>
+                    <td>{{ student.student_id }}</td>
+                    <td>{{ student.name }}</td>
+                    <td>{{ student.student_class }}</td>
+                    <td>{{ student.grade }}</td>
+                    <td>
+                        <button onclick="showInputGradeForm('{{student.student_id}}','{{student.name}}')" class="update-buttom">Add Grade</button>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <p> Tidak ada data </p>
+        {% endif %}
+
+
+        <div class="form-container" id="inputGradeForm" style="display:none;"> 
+            {% if error %}
+                <p style="color: red;">{{error}}</p>
+            {% endif %}
+            <form action="/input_grade" method="post">
+                <input type="hidden" id="updateId" name="student_id" readonly>
+                <label >Name:</label>
+                <input type="text" id="updateName" name="name" readonly>
+
+                <label for="subject_name">Subject:</label>
+                <input type="text" name="subject_name" id="subject_name" placeholder="Masukan mata pelajaran" required>
+                <br>
+                <label for="score">Score:</label>
+                <input type="int" name="score" id="score" placeholder="Masukan nilai" required>
+                <br>
+                <label for="date">Date:</label>
+                <input type="date" name="date" id="date" placeholder="Masukan tanggal" required >
+                <br>
+                <input type ="submit" value="Submit">
+            </form>
+        </div>
+
+        <script>
+            function showInputGradeForm(student_id, name) {
+                document.getElementById('updateId').value = student_id;
+                document.getElementById('updateName').value = name;
+                document.getElementById('inputGradeForm').style.display = 'block';
+            }
+        </script>
+
+       
+    </body>
+</html>

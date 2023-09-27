@@ -1,0 +1,21 @@
+openapi: 3.0.0 
+info: 
+  title: Delete data 
+  version: 1.0.0  
+
+tags: 
+  - name: Daftar API 
+
+parameters: 
+  - in: path
+    name: student_id
+    description: Id Student yang akan dihapus
+    required: true
+    type: integer
+
+responses: 
+  200:
+    description: Student berhasil dihapus
+  404:
+    description: Data tidak ditemukan
+

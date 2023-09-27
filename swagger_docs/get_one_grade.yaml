@@ -1,0 +1,45 @@
+openapi: 3.0.0
+info:
+  title: Ambil One Grade by grade id
+  version: 1.0.0
+tags:
+  - name: Daftar API 
+
+responses: 
+  200:
+    description: Data Grade berdasarkan ID
+    schema:
+        $ref: '#/definitions/Grades'
+  404:
+    description: Data tidak ditemukan 
+
+definitions: 
+  Grades: 
+    type: object 
+    properties: 
+      grade_id:
+        type: integer
+        description: Grade id
+      student_id:
+        type: int
+        description: Student id
+      subject_name:
+        type: string
+        description: Subject Name
+      score:
+        type: float
+        description: Score
+      date:
+        type: date
+        description: Date
+    
+
+parameters:
+  - in: path
+    name: grade_id
+    description: Grade id for get
+    required: true
+    type: integer
+
+    
+

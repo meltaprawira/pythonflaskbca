@@ -1,0 +1,36 @@
+openapi: 3.0.0
+info:
+  title: Get All Grade Student
+  version: 1.0.0
+tags:
+  - name: Daftar API 
+
+responses: 
+  200: 
+    description: Success get all grade
+    schema:
+      type: array
+      items:
+        $ref: '#/definitions/Grades'
+
+definitions: 
+  Grades:
+    type: object 
+    properties: 
+      grade_id:
+        type: integer
+        description: Grade id
+      student_id:
+        type: string
+        description: Student id
+      subject_name:
+        type: string
+        description: Subject Name
+      score:
+        type: string
+        description: Score
+      date:
+        type: string
+        description: Date
+    
+
