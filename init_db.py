@@ -1,7 +1,7 @@
 import sqlite3
 from sqlalchemy import create_engine, Column, Integer, String, MetaData, Table, Date, Float, ForeignKey
 
-DATABASE_PATH_SCHOOL = 'C:/Users/u063476/Documents/training python/latihan1/mypy/bcaschool/school.db'
+DATABASE_PATH_SCHOOL = 'mysql://root:RzDCm9jr6UuT2WRRxQoD@containers-us-west-181.railway.app:6301/railway'
 
 DATABASE_URI = 'sqlite:///' + DATABASE_PATH_SCHOOL
 engine = create_engine(DATABASE_URI, echo=True)

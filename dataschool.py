@@ -9,12 +9,14 @@ import os
 #Mendifiniskan app
 app = Flask(__name__)
 
-#Lokasi database
-DATABASE_PATH_SCHOOL = 'C:/Users/u063476/Documents/training python/latihan1/mypy/bcaschool/school.db'
+
+# #Lokasi database local
+# DATABASE_PATH_SCHOOL = 'C:/Users/u063476/Documents/training python/latihan1/mypy/bcaschool/school.db'
+# app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + DATABASE_PATH_SCHOOL
 
 
 #Konfigurasi database
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + DATABASE_PATH_SCHOOL
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://root:RzDCm9jr6UuT2WRRxQoD@containers-us-west-181.railway.app:6301/railway'
 app.config['SQLALCHEMY_TRACK_MODIFICATION'] = False
 
 
