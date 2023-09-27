@@ -1,1 +1,1 @@
-web: gunicorn datakar:app
+web: gunicorn bcaschool:app
