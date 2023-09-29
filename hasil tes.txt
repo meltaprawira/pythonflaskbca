@@ -1,0 +1,18 @@
+PS C:\Users\u063476\Documents\training python\latihan1\mypy> & "c:/Users/u063476/Documents/training python/latihan1/mypy/Scripts/python.exe" "c:/Users/u063476/Documents/training python/latihan1/mypy/bcaschool/test_app.py"
+c:\Users\u063476\Documents\training python\latihan1\mypy\bcaschool\dataschool.py:128: LegacyAPIWarning: The Query.get() method is considered legacy as of the 1.x series of SQLAlchemy and becomes a legacy construct in 2.0. The method is now available as Session.get() (deprecated since: 2.0) (Background on SQLAlchemy 2.0 at: https://sqlalche.me/e/b8d9)
+  student = Students.query.get(new_grade.student_id)
+..student_id  1
+grade_list  []
+c:\Users\u063476\Documents\training python\latihan1\mypy\bcaschool\dataschool.py:492: LegacyAPIWarning: The Query.get() method is considered legacy as of the 1.x series of SQLAlchemy and becomes a legacy construct in 2.0. The method is now available as Session.get() (deprecated since: 2.0) (Background on SQLAlchemy 2.0 at: https://sqlalche.me/e/b8d9)
+  student = Students.query.get(student_id)
+c:\Users\u063476\Documents\training python\latihan1\mypy\bcaschool\test_app.py:126: LegacyAPIWarning: The Query.get() method is considered legacy as of the 1.x series of SQLAlchemy and becomes a legacy construct in 2.0. The method is now available as Session.get() (deprecated since: 2.0) (Background on SQLAlchemy 2.0 at: https://sqlalche.me/e/b8d9)
+  self.assertIsNone(Students.query.get(grade.grade_id))  # Memastikan karyawan dengan id tersebut sudah dihapus
+.c:\Users\u063476\Documents\training python\latihan1\mypy\bcaschool\test_app.py:73: LegacyAPIWarning: The Query.get() method is considered legacy as of the 1.x series of SQLAlchemy and becomes a legacy construct in 2.0. The method is now available as Session.get() (deprecated since: 2.0) (Background on SQLAlchemy 2.0 at: https://sqlalche.me/e/b8d9)
+  self.assertIsNone(Students.query.get(student.student_id))  # Memastikan karyawan dengan id tersebut sudah dihapus
+...c:\Users\u063476\Documents\training python\latihan1\mypy\bcaschool\dataschool.py:310: LegacyAPIWarning: The Query.get() method is considered legacy as of the 1.x series of SQLAlchemy and becomes a legacy construct in 2.0. The method is now available as Session.get() (deprecated since: 2.0) (Background on SQLAlchemy 2.0 at: https://sqlalche.me/e/b8d9)
+  student = Students.query.get(student_id)
+..
+----------------------------------------------------------------------
+Ran 8 tests in 0.337s
+
+OK

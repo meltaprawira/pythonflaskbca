@@ -14,24 +14,25 @@ responses:
     description: Data tidak ditemukan 
 
 definitions: 
-  Grades: 
+  Grades:
     type: object 
     properties: 
       grade_id:
         type: integer
         description: Grade id
       student_id:
-        type: int
+        type: integer
         description: Student id
       subject_name:
         type: string
         description: Subject Name
       score:
-        type: float
+        type: number
         description: Score
       date:
-        type: date
+        type: string
         description: Date
+        format: date
     
 
 parameters:

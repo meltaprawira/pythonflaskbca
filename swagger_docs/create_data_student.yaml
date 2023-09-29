@@ -28,7 +28,10 @@ definitions:
         type: string
       student_class:
         type: string
+      grade:
+        type: string
     required:
       - name
       - student_class
+      - grade
  

@@ -48,7 +48,7 @@ def create_tables():
     db.create_all()
 
     
-#Model Data Karyawan
+#Model Data Siswa
 class Students(db.Model):
     student_id = db.Column(db.Integer, primary_key = True)
     name = db.Column(db.String(100), nullable=False)
@@ -74,11 +74,11 @@ def create_student():
     #mendapatkan data dari permintaan POST
     data = request.json
 
-    #Membuat objek karyawan
+    #Membuat objek Siswa
     new_student = Students(
         name=data['name'],
-        student_class=data['student_class']
-        # grade=data['grade']
+        student_class=data['student_class'],
+        grade=data['grade']
     )
     #Menyimpan objek ke database
     db.session.add(new_student)
@@ -117,12 +117,17 @@ def create_grade():
     #mendapatkan data dari permintaan POST
     data = request.json
 
-    #Membuat objek karyawan
+    #Membuat objek Siswa
     new_grade = Grades(
+        student_id=data['student_id'],
         subject_name=data['subject_name'],
         score=data['score'],
-        date=data['date']
+        date=datetime.strptime(data['date'],'%Y-%m-%d')
     )
+    
+    student = Students.query.get(new_grade.student_id)
+    if not student:
+            return jsonify({'message': 'Siswa tidak ditemukan'}),404
 
     #Menyimpan objek ke database
     db.session.add(new_grade)
@@ -162,10 +167,10 @@ def input_grade():
     else:
         student_list = []
         try: 
-            #mengambil semua data karyawan dari db
+            #mengambil semua data Siswa dari db
             all_student = Students.query.all()
 
-            #membuat daftar dari data karyawan 
+            #membuat daftar dari data Siswa 
             for student in all_student:
                 student_data = {
                     'student_id': student.student_id,
@@ -190,10 +195,10 @@ def input_grade():
 def get_all_student():
     student_list = []
     try: 
-        #mengambil semua data karyawan dari db
+        #mengambil semua data Siswa dari db
         all_student = Students.query.all()
 
-        #membuat daftar dari data karyawan 
+        #membuat daftar dari data Siswa 
         for student in all_student:
             student_data = {
                 'student_id': student.student_id,
@@ -215,10 +220,10 @@ def get_all_student():
 def get_all_student_ui():
     student_list = []
     try: 
-        #mengambil semua data karyawan dari db
+        #mengambil semua data Siswa dari db
         all_student = Students.query.all()
 
-        #membuat daftar dari data karyawan 
+        #membuat daftar dari data Siswa 
         for student in all_student:
             student_data = {
                 'student_id': student.student_id,
@@ -243,14 +248,15 @@ def get_all_student_ui():
 def get_all_grade():
     grade_list = []
     try: 
-        #mengambil semua data karyawan dari db
+        #mengambil semua data Siswa dari db
         all_grade = Grades.query.join(Students, Students.student_id==Grades.student_id).add_columns(Grades.grade_id,Grades.subject_name,Grades.score,Grades.date, Grades.student_id, Students.name ).all()
 
-        #membuat daftar dari data karyawan 
+        #membuat daftar dari data Siswa 
         for grade in all_grade:
             grade_data = {
                 'grade_id': grade.grade_id,
                 'name': grade.name,
+                'student_id': grade.student_id,
                 'subject_name': grade.subject_name,
                 'score': grade.score,
                 'date': grade.date
@@ -270,10 +276,10 @@ def get_all_grade():
 def get_all_grade_ui():
     grade_list = []
     try: 
-        #mengambil semua data karyawan dari db
+        #mengambil semua data Siswa dari db
         all_grade = Grades.query.join(Students, Students.student_id==Grades.student_id).add_columns(Grades.grade_id,Grades.subject_name,Grades.score,Grades.date, Grades.student_id, Students.name ).all()
 
-        #membuat daftar dari data karyawan 
+        #membuat daftar dari data Siswa 
         for grade in all_grade:
             grade_data = {
                 'grade_id': grade.grade_id,
@@ -284,10 +290,10 @@ def get_all_grade_ui():
             }
             grade_list.append(grade_data)
 
-        if grade_list.count==0:
-            return render_template('error.html', pesan="Tidak ada data siswa yang dapat ditampilkan"),404 
-        else:
-            return Response(json.dumps(grade_list),  mimetype='application/json')
+        # if grade_list.count==0:
+        #     return render_template('error.html', pesan="Tidak ada data siswa yang dapat ditampilkan"),404 
+        # else:
+        #     return Response(json.dumps(grade_list),  mimetype='application/json')
     except Exception as e:
         #mengembalikan pesan kesalahan 
         return render_template('error.html', pesan="Terjadi kesalahan saat mengambil data grade: {}".format(str(e))),500
@@ -326,11 +332,11 @@ def get_one_grade(grade_id):
         #mengembalikan pesan kesalahan 
         return render_template('error.html', pesan="Terjadi kesalahan saat mengambil data siswa: {}".format(str(e))),500
 
-
+@app.route('/display_grade/<int:student_id>', methods=['GET'])
 def get_one_grade_by_student_id(student_id):
     grade_list = []
     try: 
-        #mengambil semua data karyawan dari db
+        #mengambil semua data Siswa dari db
         grade_list = Grades.query.join(Students, Students.student_id==Grades.student_id).add_columns(Grades.grade_id,Grades.subject_name,Grades.score,Grades.date, Grades.student_id, Students.name ).filter_by(student_id=student_id).all()
         return render_template('displayall.html',grade_list= grade_list)
     except Exception as e:
@@ -354,7 +360,7 @@ def update_student(student_id):
         if not student:
             return jsonify({'message': 'Siswa tidak ditemukan'}),404
         
-        #Membuat objek karyawan
+        #Membuat objek Siswa
         update = Students(
             name=data['name'],
             student_class=data['student_class'],
@@ -378,6 +384,7 @@ def update_student_ui():
         name = request.form.get('name')
         student_class = request.form.get('student_class')
         grade = request.form.get('grade')
+        print('test', student_id)
 
         student = Students.query.get(student_id)
         if not student:
@@ -389,7 +396,7 @@ def update_student_ui():
 
         db.session.commit()
 
-        return redirect(url_for('get_all_student'))
+        return redirect(url_for('get_all_student_ui'))
     except Exception  as e:
         return jsonify({'message': f'Terjadi kesalahan: {str(e)}'}),500
 
@@ -397,6 +404,39 @@ def update_student_ui():
 @app.route('/school/update_grade/<int:grade_id>', methods=['POST'])
 @swag_from('swagger_docs/update_grade.yaml')
 def update_grade(grade_id):
+    try:
+        #mendapatkan data dari permintaan POST
+        data = request.json
+
+        grade = Grades.query.get(grade_id)
+        if not grade:
+            return jsonify({'message': 'Grade tidak ditemukan'}),404
+        
+        #Membuat objek Siswa
+        update = Grades(
+            subject_name=data['subject_name'],
+            score=data['score'],
+            date=datetime.strptime(data['date'],'%Y-%m-%d')
+        )
+
+        student = Students.query.get(grade.student_id)
+        if not student:
+            return jsonify({'message': 'Siswa tidak ditemukan'}),404
+        
+        grade.subject_name = update.subject_name
+        grade.score = update.score
+        grade.date = update.date
+
+        db.session.commit()
+
+        update_grade_student(grade.student_id)
+
+        return jsonify({'message': f'grade_id: {grade.grade_id}, student_id: {grade.student_id}, subject_name: {grade.subject_name}, score: {grade.score}, date: {grade.date}'}),200
+    except Exception  as e:
+        return jsonify({'message': f'Terjadi kesalahan: {str(e)}'}),500
+
+@app.route('/update_grade', methods=['POST'])
+def update_grade_ui():
     try:
         student_id = request.form.get('student_id')
         grade_id = request.form.get('grade_id')
@@ -416,14 +456,13 @@ def update_grade(grade_id):
         return redirect(url_for('get_one_grade_by_student_id',student_id=student_id))
     except Exception  as e:
         return jsonify({'message': f'Terjadi kesalahan: {str(e)}'}),500
-    
+
 
 def update_grade_student(student_id):
     grade_list = []
     try: 
         print("student_id ", student_id)
 
-        #mengambil semua data karyawan dari db
         grade_list = Grades.query.join(Students, Students.student_id==Grades.student_id).add_columns(Grades.grade_id,Grades.subject_name,Grades.score,Grades.date, Grades.student_id, Students.name ).filter_by(student_id=student_id).all()
         print("grade_list ", grade_list)
         totalScore = 0
@@ -434,9 +473,10 @@ def update_grade_student(student_id):
             totalScore += int(grade.score)
             totalSubject += 1   
 
-        print("total score", totalScore)
-        print("total subjec", totalSubject)
-        avgScore = int(totalScore/totalSubject)
+        if  totalScore>0 and totalSubject >0:
+            avgScore = int(totalScore/totalSubject)
+        else:
+            avgScore = 0
     except Exception as e:
         #mengembalikan pesan kesalahan 
         return render_template('error.html', pesan="Terjadi kesalahan saat mengambil data siswa: {}".format(str(e))),500
@@ -469,9 +509,9 @@ def delete_student(student_id):
 
             delete_grade_by_student(student_id)
 
-            return jsonify({'message':f'Data karyawan dengan id {student_id} berhasil dihapus'}),200
+            return jsonify({'message':f'Data Siswa dengan id {student_id} berhasil dihapus'}),200
         else:
-            return jsonify({'message':f'Data karyawan dengan id {student_id} tidak ditemukan'}),404
+            return jsonify({'message':f'Data Siswa dengan id {student_id} tidak ditemukan'}),404
     except Exception as e:
         return jsonify({'message':f'Terjadi kesalahan: {e}'}),500
 
@@ -487,9 +527,9 @@ def delete_grade(grade_id):
 
             update_grade_student(grade_to_delete.student_id)
 
-            return jsonify({'message':f'Data karyawan dengan id {grade_id} berhasil dihapus'}),200
+            return jsonify({'message':f'Data Siswa dengan id {grade_id} berhasil dihapus'}),200
         else:
-            return jsonify({'message':f'Data karyawan dengan id {grade_id} tidak ditemukan'}),404
+            return jsonify({'message':f'Data Siswa dengan id {grade_id} tidak ditemukan'}),404
     except Exception as e:
         return jsonify({'message':f'Terjadi kesalahan: {e}'}),500
     
@@ -499,9 +539,9 @@ def delete_grade_by_student(student_id):
         if grade_to_delete:
             db.session.delete(grade_to_delete)
             db.session.commit()
-            return jsonify({'message':f'Data karyawan dengan id {student_id} berhasil dihapus'}),200
+            return jsonify({'message':f'Data Siswa dengan id {student_id} berhasil dihapus'}),200
         else:
-            return jsonify({'message':f'Data karyawan dengan id {student_id} tidak ditemukan'}),404
+            return jsonify({'message':f'Data Siswa dengan id {student_id} tidak ditemukan'}),404
     except Exception as e:
         return jsonify({'message':f'Terjadi kesalahan: {e}'}),500
 
@@ -509,5 +549,6 @@ def delete_grade_by_student(student_id):
 
 if __name__ == '__main__':
     app.run(debug=True)
-    
+
+    # app.run(debug=True, port=5030)
 

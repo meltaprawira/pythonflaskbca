@@ -24,19 +24,19 @@ definitions:
   Grades:
     type: object
     properties:
+      student_id:
+        type: integer
       subject_name:
         type: string
       score:
-        type: float
+        type: number
       date:
         type: string
         minLength: 8
         maxLength: 8
         format: date
-        pattern: '^\d{4}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])$'
-        example: 2019-08-16
-        description: Birth date of the  member in YYYY-MM-DD format.
     required:
+      - student_id
       - subject_name
       - score
       - date

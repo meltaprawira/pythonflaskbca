@@ -21,16 +21,17 @@ definitions:
         type: integer
         description: Grade id
       student_id:
-        type: string
+        type: integer
         description: Student id
       subject_name:
         type: string
         description: Subject Name
       score:
-        type: string
+        type: number
         description: Score
       date:
         type: string
         description: Date
+        format: date
     
 

@@ -27,16 +27,22 @@ responses: #Daftar respon yang dapat diberikan oleh operasi API
       $ref: '#/definitions/Grades'
 
 definitions: 
-  Grades: 
+  Grades:
     type: object
-    properties: 
+    properties:
+      student_id:
+        type: integer
       subject_name:
         type: string
       score:
-        type: float
+        type: number
       date:
         type: string
+        minLength: 8
+        maxLength: 8
+        format: date
     required:
+      - student_id
       - subject_name
       - score
       - date

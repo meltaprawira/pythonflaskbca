@@ -36,7 +36,7 @@
                     <td>{{ student.student_class}}</td>
                     <td>{{ student.grade}}</td>
                     <td>
-                        <button onclick="showUpdateForm('{{student.student_id}}', '{{student.name}}')" class="update-button">Update</button>
+                        <button onclick="showUpdateForm('{{student.student_id}}', '{{student.name}}', '{{student.student_class}}', '{{student.grade}}')" class="update-button">Update</button>
                         <button onclick="confirmDelete('{{student.student_id}}', '{{student.name}}')" class="update-button">Delete</button>
                         <a href="/display_grade/{{student.student_id}}" class = "update-button">Show Grade</a>
 
@@ -53,7 +53,7 @@
                 <label class="field-label" for="updateNama">Nama Siswa:</label>
                 <input type="text" id="updateNama" name="name" readonly>
                 <label class="field-label" for="updateClass">Kelas:</label>
-                <input type="text" id="updateClass" name="studentClass" placeholder="New Class" required>
+                <input type="text" id="updateClass" name="student_class" placeholder="New Class" required>
                 <label class="field-label" for="updateGrade">Grade:</label>
                 <input type="text" id="updateGrade" name="grade" readonly>
                 <input type="submit" value="Submit" class="update-button">
@@ -61,9 +61,11 @@
             </form>
         </div>
         <script>
-            function showUpdateForm(id, name) {
+            function showUpdateForm(id, name, student_class, grade) {
                 document.getElementById('updateId').value = id;
                 document.getElementById('updateNama').value = name;
+                document.getElementById('updateClass').value = student_class;
+                document.getElementById('updateGrade').value = grade;
                 document.getElementById('updateForm').style.display = 'block';
             }
         </script>
